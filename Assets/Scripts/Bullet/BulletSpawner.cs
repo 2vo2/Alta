@@ -1,0 +1,60 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Pool;
+
+public class BulletSpawner : MonoBehaviour
+{
+    [SerializeField] private Transform _spawnPoint;
+    [SerializeField] private Bullet _bulletPrefab;
+    
+    private List<Bullet> _bullets = new();
+
+    public ObjectPool<Bullet> Pool { get; set; }
+
+    private void Awake()
+    {
+        Pool = new ObjectPool<Bullet>
+            (SpawnBullet, OnTakeBulletFromPool, OnReturnBulletFromPool);
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            GetBullet();
+        }
+    }
+
+    private void OnDisable()
+    {
+        foreach (var bullet in _bullets)
+        {
+            bullet.TriggerBullet -= BulletRelease;
+        }
+    }
+
+    private void BulletRelease(Bullet bullet) => Pool.Release(bullet);
+
+    private void GetBullet() => Pool.Get();
+
+    private void OnReturnBulletFromPool(Bullet bullet)
+    {
+        bullet.gameObject.SetActive(false);
+        bullet.transform.position = _spawnPoint.position;
+        bullet.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+    }
+
+    private void OnTakeBulletFromPool(Bullet bullet)
+    {
+        bullet.gameObject.SetActive(true);
+    }
+
+    private Bullet SpawnBullet()
+    {
+        var newBullet = Instantiate(_bulletPrefab, _spawnPoint.position, Quaternion.identity);
+        _bullets.Add(newBullet);
+        newBullet.TriggerBullet += BulletRelease;
+        return newBullet;
+    }
+}

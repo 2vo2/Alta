@@ -1,0 +1,4 @@
+interface IScale
+{
+    void Scaled();
+}

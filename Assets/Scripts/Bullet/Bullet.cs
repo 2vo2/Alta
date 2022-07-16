@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,13 +11,13 @@ public class Bullet : MonoBehaviour
     private Vector3 _finishPoint;
     private PlayerInput _playerInput;
 
+    public Rigidbody Rigidbody => _rigidbody;
     public event UnityAction<Bullet> TriggerBullet;
 
     private void Awake()
     {
         _playerInput = FindObjectOfType<PlayerInput>();
         _finishPoint = FindObjectOfType<FinishPoint>().transform.position;
-        print(_finishPoint);
     }
 
     private void OnEnable()
@@ -31,15 +32,14 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Obstacle obstacle))
+        if (other.TryGetComponent(out FinishPoint finishPoint))
         {
             TriggerBullet?.Invoke(this);
-            print(1);
         }
     }
 
     public void Move()
     {
-        transform.DOMove(_finishPoint, 2f);
+        _rigidbody.velocity = Vector3.forward * _speed;
     }
 }

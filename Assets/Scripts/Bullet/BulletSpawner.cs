@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -9,6 +8,7 @@ public class BulletSpawner : MonoBehaviour
     [SerializeField] private Bullet _bulletPrefab;
     
     private List<Bullet> _bullets = new();
+    private Vector3 _startScale;
 
     public ObjectPool<Bullet> Pool { get; set; }
 
@@ -16,6 +16,8 @@ public class BulletSpawner : MonoBehaviour
     {
         Pool = new ObjectPool<Bullet>
             (SpawnBullet, OnTakeBulletFromPool, OnReturnBulletFromPool);
+
+        _startScale = _bulletPrefab.transform.localScale;
     }
 
     private void Update()
@@ -26,7 +28,7 @@ public class BulletSpawner : MonoBehaviour
         }
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         foreach (var bullet in _bullets)
         {
@@ -41,13 +43,15 @@ public class BulletSpawner : MonoBehaviour
     private void OnReturnBulletFromPool(Bullet bullet)
     {
         bullet.gameObject.SetActive(false);
-        bullet.transform.position = _spawnPoint.position;
-        bullet.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+        bullet.Rigidbody.isKinematic = true;
     }
 
     private void OnTakeBulletFromPool(Bullet bullet)
     {
         bullet.gameObject.SetActive(true);
+        bullet.transform.position = _spawnPoint.position;
+        bullet.transform.localScale = _startScale;
+        bullet.Rigidbody.isKinematic = false;
     }
 
     private Bullet SpawnBullet()

@@ -1,5 +1,3 @@
-using System;
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,19 +5,18 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private float _speed;
-    
-    private Vector3 _finishPoint;
+
     private PlayerInput _playerInput;
 
     public Rigidbody Rigidbody => _rigidbody;
     public event UnityAction<Bullet> TriggerBullet;
+    public event UnityAction TouchObstacle;
 
     private void Awake()
     {
         _playerInput = FindObjectOfType<PlayerInput>();
-        _finishPoint = FindObjectOfType<FinishPoint>().transform.position;
     }
-
+    
     private void OnEnable()
     {
         _playerInput.CanceledInput += Move;
@@ -36,9 +33,15 @@ public class Bullet : MonoBehaviour
         {
             TriggerBullet?.Invoke(this);
         }
-    }
 
-    public void Move()
+        if (other.TryGetComponent(out Obstacle obstacle))
+        {
+            TouchObstacle?.Invoke();
+            TriggerBullet?.Invoke(this);
+        }
+    }
+    
+    private void Move()
     {
         _rigidbody.velocity = Vector3.forward * _speed;
     }

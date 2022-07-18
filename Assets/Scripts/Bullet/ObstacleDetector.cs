@@ -30,7 +30,7 @@ public class ObstacleDetector : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, _radius, layerMask);
         foreach (var hitCollider in hitColliders)
         {
-            hitCollider.gameObject.SetActive(false);
+            hitCollider.GetComponent<Obstacle>().Detonation();
         }
     }
 

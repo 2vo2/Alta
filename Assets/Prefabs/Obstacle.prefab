@@ -111,3 +111,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5efa8fb898fac94449e963c07dc2f280, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _renderer: {fileID: 2410086350673977002}
+  _detonationMaterial: {fileID: 2100000, guid: dfe4a1e561cfaaf4db24de4f895aea2a, type: 2}
+  _delay: 1

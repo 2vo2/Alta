@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99069c2f67d6def4cbf4759b00e310d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scaleFactor: 0.0015
+  _scaleFactor: 0.003
 --- !u!114 &6300153210861670135
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,6 +156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8779f9139bf946cd9f6a76fb7011b34d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _radius: 0.1
+  _radius: 0.2
   _layerID: 3
   _bullet: {fileID: 5751416380110283342}

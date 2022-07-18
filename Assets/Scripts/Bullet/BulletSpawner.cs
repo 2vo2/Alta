@@ -56,7 +56,7 @@ public class BulletSpawner : MonoBehaviour
 
     private Bullet SpawnBullet()
     {
-        var newBullet = Instantiate(_bulletPrefab, _spawnPoint.position, Quaternion.identity);
+        var newBullet = Instantiate(_bulletPrefab, _spawnPoint.position, Quaternion.identity, transform);
         _bullets.Add(newBullet);
         newBullet.TriggerBullet += BulletRelease;
         return newBullet;
